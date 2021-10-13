@@ -1,6 +1,4 @@
 require('dotenv').config();
-//process of registring slash command
-//put bot online 
 const {Client, Intents} = require('discord.js');
 const client = new Client({intents: [Intents.FLAGS.GUILDS]});
 client.once('ready', ()=>{
