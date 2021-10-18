@@ -28,7 +28,7 @@ client.on('messageCreate', message => {
 	if (arg) {
 		(async () => {
 			const response = await nlp.process('en', arg);
-			console.log('start to process')
+			console.log('finished processing')
 			message.reply({
 				content: response["answers"][Math.floor(response["answers"].length * Math.random())]["answer"]
 			})
