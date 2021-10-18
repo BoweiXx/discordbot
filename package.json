@@ -4,16 +4,23 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "nodemon main.js"
+    "dev": "nodemon main.js",
+    "deploy": "nodemon deploy_commands.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "0.1.0-canary.0",
+    "@nlpjs/basic": "^4.22.0",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
-    "eslint": "^8.0.0"
+    "eslint": "^8.0.0",
+    "ffmpeg": "^0.0.4",
+    "node-nlp": "^4.22.1",
+    "rita": "^2.4.501",
+    "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^16.10.4",

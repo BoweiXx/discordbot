@@ -1,20 +1,62 @@
 require('dotenv').config();
-const {Client, Intents} = require('discord.js');
-const client = new Client({intents: [Intents.FLAGS.GUILDS]});
-client.once('ready', ()=>{
-  console.log("I am ready")
+const { Client, Intents } = require('discord.js');
+const { dockStart } = require('@nlpjs/basic');
+let nlp
+// const util= require('util');
+(async () => {
+	const dock = await dockStart({ use: ['Basic'] });
+	//   console.log(util.inspect(dock,true,10));
+	nlp = dock.get('nlp');
+	await nlp.addCorpus('./corpus.json');
+	await nlp.train();
+})();
+const client = new Client(
+	{
+		intents:
+			[Intents.FLAGS.GUILDS,
+			Intents.FLAGS.GUILD_MESSAGES]
+	})
+client.once('ready', () => {
+	console.log("I am ready");
+});
+const prefix = '!';
+client.on('messageCreate', message => {
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	const args = message.content.slice(prefix.length).slice(/ +/);
+	const arg = args.toLowerCase();
+	console.log(arg);
+	if (arg) {
+		(async () => {
+			const response = await nlp.process('en', arg);
+			console.log('start to process')
+			message.reply({
+				content: response["answers"][Math.floor(response["answers"].length * Math.random())]["answer"]
+			})
+		})();
+	}
 });
 
 client.login(`${process.env.BOT_TOKEN}`);
 
-client.on('interactionCreate', async interaction =>{
-  if (!interaction.isCommand()) return;
-	const { commandName } = interaction;
-	if (commandName === 'ping') {
-		await interaction.reply('Pong!');
-	} else if (commandName === 'server') {
-		await interaction.reply('This is a testfield for bot');
-	} else if (commandName === 'user') {
-		await interaction.reply('User info.');
-	}
-})
+
+
+
+
+
+
+//save for later
+// const ffmpeg = require('ffmpeg');
+// const SpotifyAPI = require('spotify-web-api-node');
+// const mySpotify = new SpotifyAPI({
+// 	clientId: process.env.SPOTIFY_CLIENT_ID,
+// 	clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+// })
+// mySpotify.setAccessToken(process.env.);
+// mySpotify.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
+// 	function (data) {
+// 		console.log('Artist albums', data.body);
+// 	},
+// 	function (err) {
+// 		console.error(err);
+// 	}
+// );
