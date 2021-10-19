@@ -1,3 +1,6 @@
+/*
+Corpus is from: https://github.com/jesus-seijas-sp/nlpjs-examples/blob/master/01.quickstart/02.filecorpus/corpus-en.json
+*/
 require('dotenv').config();
 const { Client, Intents } = require('discord.js');
 const { dockStart } = require('@nlpjs/basic');
@@ -28,22 +31,13 @@ client.on('messageCreate', message => {
 	if (arg) {
 		(async () => {
 			const response = await nlp.process('en', arg);
-			console.log('finished processing')
 			message.reply({
 				content: response["answers"][Math.floor(response["answers"].length * Math.random())]["answer"]
 			})
 		})();
 	}
 });
-
 client.login(`${process.env.BOT_TOKEN}`);
-
-
-
-
-
-
-
 //save for later
 // const ffmpeg = require('ffmpeg');
 // const SpotifyAPI = require('spotify-web-api-node');
