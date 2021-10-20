@@ -1,10 +1,12 @@
 /*
 Corpus is from: https://github.com/jesus-seijas-sp/nlpjs-examples/blob/master/01.quickstart/02.filecorpus/corpus-en.json
+And a minor edit was made based on it
 */
 require('dotenv').config();
 const { Client, Intents } = require('discord.js');
 const { dockStart } = require('@nlpjs/basic');
-let nlp
+let nlp;
+// const deploy = require('./deploy');
 // const util= require('util');
 (async () => {
 	const dock = await dockStart({ use: ['Basic'] });
@@ -20,6 +22,7 @@ const client = new Client(
 			Intents.FLAGS.GUILD_MESSAGES]
 	})
 client.once('ready', () => {
+	// deploy();
 	console.log("I am ready");
 });
 const prefix = '!';
@@ -31,13 +34,28 @@ client.on('messageCreate', message => {
 	if (arg) {
 		(async () => {
 			const response = await nlp.process('en', arg);
-			message.reply({
-				content: response["answers"][Math.floor(response["answers"].length * Math.random())]["answer"]
-			})
+			if (response['answer']) {
+				await message.reply({
+					content: response["answers"][Math.floor(response["answers"].length * Math.random())]["answer"]
+				})
+			}else{
+				await message.reply({
+					content: "Sorry, I am just a 3-day-old baby, I am still learning"
+				})
+			}
 		})();
 	}
 });
 client.login(`${process.env.BOT_TOKEN}`);
+
+// client.on('interactionCreate', async (interaction)=>{
+// 	if(!interaction.isCommand()) return;
+// 	if(interaction.commandName === 'say'){
+// 		const response = await nlp.process('en', interaction.options);
+// 		await interaction.reply( {content: response["answers"][Math.floor(response["answers"].length * Math.random())]["answer"]})
+// 	}
+// });
+
 //save for later
 // const ffmpeg = require('ffmpeg');
 // const SpotifyAPI = require('spotify-web-api-node');
